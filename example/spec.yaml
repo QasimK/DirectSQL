@@ -1,0 +1,75 @@
+info:
+  title: DirectSQL REST API
+  version: '1.0'
+openapi: 3.0.3
+paths:
+  /misc/foreign-keys:
+    get:
+      description: Return current settings
+      operationId: GetPragmaDirectives
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Get Pragma Directives
+  /settings:
+    get:
+      description: 'Return the settings for the user.
+
+
+        **NOTE:** The user must already exist.'
+      operationId: GetSettings
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Get Settings
+    post:
+      description: Set the settings for the given user
+      operationId: UpdateSettings
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Update Settings
+  /v1/lists:
+    get:
+      description: 'Return all lists for the given user.
+
+
+        **NOTE:** The user must already exist.'
+      operationId: GetLists
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Get Lists
+  /v1/users/:
+    post:
+      description: Create a new User, returning the User ID
+      operationId: CreateANewUser
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Create a new User

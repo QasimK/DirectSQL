@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "directsql"
+version = "0.1.0"
+description = "Use SQL safely from a client app"
+readme = "README.md"
+authors = ["QasimK <noreply@QasimK.io>"]
+license = "AGPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+PyYAML = "^5.4.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.3"
+uWSGI = "^2.0.19"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+target-version = ["py38"]
