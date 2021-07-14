@@ -1,12 +1,8 @@
-# Create a new list (TODO)
+# Create a new list
 
-TODO: This can only work with executescript which cannot take parameters.
-
-The list is automatically shared with the owner
+Create a new list owned by the user.
 
 ```sql
-BEGIN;
-
 WITH
     auth_user AS (
         SELECT user_id
@@ -18,24 +14,13 @@ WITH
     )
 
 INSERT INTO
-    list (title)
+    fn_add_list (user_id, title)
 SELECT
-    (:title)
+    auth_user.user_id
+  , :title
 FROM
     auth_user
 -- Requires SQlite 3.35
 -- RETURNING list_id
 ;
-
-INSERT INTO
-    user_list (user_id, list_id, role)
-SELECT
-    auth_user.user_id
-  , last_insert_rowid()
-  , "OWNER"
-FROM
-    auth_user
-;
-
-COMMIT;
 ```

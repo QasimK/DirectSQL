@@ -1,9 +1,8 @@
-from pathlib import Path
+from email.utils import formatdate, format_datetime
 from functools import partial
+from pathlib import Path
 import logging
 import urllib.parse
-import pprint
-from email.utils import formatdate
 
 from directsql import types
 from directsql import converters
@@ -17,7 +16,7 @@ def application(env, start_response, cache, executor):
     cached_query = cache.get(lookup_name)
     if not cached_query:
         logger.debug("404: %s. Have %s", lookup_name, cache)
-        pprint.pprint(cache)
+        print(cache)
         start_response("404 NOT FOUND", [("Content-Type", "text/html")])
         return [b"404 URL NOT FOUND"]
 
@@ -25,18 +24,13 @@ def application(env, start_response, cache, executor):
     headers = {key[5:]: value for key, value in env.items() if key.startswith("HTTP_")}
 
     output_params = {}
-    for key, values in query_params.items():
-        validator = cached_query.schema.get(key)
-        if validator:
-            output_params[key] = validator(key, values, headers)
-        else:
-            output_params[key] = str(values)
+    for key, validator in cached_query.schema.items():
+        output_params[key] = validator(query_params, headers)[1]
 
     for param_mapping in cached_query.param_mappings:
         new_params = param_mapping(query_params, headers)
         output_params.update(new_params)
 
-    print(output_params)
     date = formatdate(timeval=None, localtime=False, usegmt=True)
     rows = executor(cached_query.sql, output_params)
 
@@ -44,17 +38,23 @@ def application(env, start_response, cache, executor):
         start_response("204 NO CONTENT", [])
         return [b""]
 
+    last_modified = None
+    if cached_query.last_modified:
+        last_modified = cached_query.last_modified(rows)
+        last_modified = format_datetime(last_modified, usegmt=True)
+
     result, encoding = converters.convert(rows, env.get("HTTP_ACCEPT"))
     length = len(result)
 
-    start_response(
-        "200 OK",
-        [
-            ("Content-Length", str(length)),
-            ("Content-Type", encoding),
-            ("Date", date),
-        ],
-    )
+    headers = [
+        ("Content-Length", str(length)),
+        ("Content-Type", encoding),
+        ("Date", date),
+    ]
+    if last_modified:
+        headers.append(("Last-Modified", last_modified))
+
+    start_response("200 OK", headers)
     return [result]
 
 
@@ -95,4 +95,5 @@ def _parse_query_file(base: Path, query: types.Query) -> types.CachedQuery:
         lookup_key=f"{method} /{path}",
         schema=query.schema,
         param_mappings=query.param_mappings,
+        last_modified=query.last_modified,
     )

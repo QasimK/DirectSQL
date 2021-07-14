@@ -17,19 +17,28 @@ Start `run.sh`
 
 ```
 # Create user
-curl -i -X POST "127.0.0.1:9091/v1/users?password=password"
+curl -i -X POST "127.0.0.1:9091/v1/users?password=password&name=me"
 
 # Create session
-curl -i -X POST -H "Authorization: Basic MTpwYXNzd29yZA==" "127.0.0.1:9091/v1/sessions?token=mytoken123"
+curl -i -X POST -H "Authorization: Basic MTpwYXNzd29yZA==" -H "Token: 123" "127.0.0.1:9091/v1/sessions"
 
 # Get sessions
-curl -i -H "Authorization: Basic MTA6MTIz" "127.0.0.1:9091/v1/sessions"
+curl -i -H "Authorization: Basic MToxMjM=" "127.0.0.1:9091/v1/sessions"
 
 # Delete session
 curl -i -X DELETE -H "Authorization: Basic MTpwYXNzd29yZA==" "127.0.0.1:9091/v1/sessions?session_id=1"
 
-# Add List
-curl -i -X POST -H "Authorization: Basic MTA6MTIz" "127.0.0.1:9091/v1/lists?title=mylist"
+# Add list
+curl -i -X POST -H "Authorization: Basic MToxMjM=" "127.0.0.1:9091/v1/lists?title=mylist"
+
+# Get lists
+curl -i -H "Authorization: Basic MToxMjM=" "127.0.0.1:9091/v1/lists"
+
+# Update list
+curl -i -X PUT -H "Authorization: Basic MToxMjM=" "127.0.0.1:9091/v1/lists?list_id=1&title=next&last_modified=2021-07-14%2017%3A35%3A07"
+
+# Delete list
+curl -i -X DELETE -H "Authorization: Basic MToxMjM=" "127.0.0.1:9091/v1/lists?list_id=1"
 ```
 
 ## Model
@@ -51,4 +60,3 @@ curl -i -X POST -H "Authorization: Basic MTA6MTIz" "127.0.0.1:9091/v1/lists?titl
 - Add Item
 - Update Item
 - Delete Item
-- Get Items

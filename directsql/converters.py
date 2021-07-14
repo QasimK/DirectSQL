@@ -2,10 +2,10 @@
 import csv
 import json
 import io
-from typing import Tuple
+from typing import Optional, Tuple
 
 
-def convert(rows: list, accept: str) -> Tuple[bytes, str]:
+def convert(rows: list, accept: Optional[str]) -> Tuple[bytes, str]:
     if accept.lower() == "application/csv":
         return convert_to_csv(rows), "text/csv; charset=UTF-8"
     if accept.lower() == "application/json":
@@ -18,8 +18,7 @@ def convert_to_tsv(rows: list) -> bytes:
     output = io.StringIO()
     writer = csv.writer(output, delimiter="\t")
     writer.writerow(rows[0].keys())
-    for row in rows:
-        writer.writerow(row)
+    writer.writerows(rows)
     result = output.getvalue().encode("utf-8")
     return result
 
@@ -28,8 +27,7 @@ def convert_to_csv(rows: list) -> bytes:
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(rows[0].keys())
-    for row in rows:
-        writer.writerow(row)
+    writer.writerows(rows)
     result = output.getvalue().encode("utf-8")
     return result
 

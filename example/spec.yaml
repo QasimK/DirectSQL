@@ -17,9 +17,10 @@ paths:
           description: 200 OK
       summary: Get Pragma Directives
   /v1/lists:
-    post:
-      description: The list is automatically shared with the owner
-      operationId: CreateANewList(todo)
+    delete:
+      description: Delete the given lists by `list_id`. At least one list id must
+        be given.
+      operationId: DeleteList
       parameters: []
       responses:
         '200':
@@ -28,7 +29,50 @@ paths:
             text/csv: {}
             text/tsv: {}
           description: 200 OK
-      summary: Create a new list (TODO)
+      summary: Delete list
+    get:
+      description: Get the given list(s) by `list_id`. If no `list_id` is given, then
+        all lists will be returned for the user.
+      operationId: GetList(s)
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Get list(s)
+    post:
+      description: Create a new list owned by the user.
+      operationId: CreateANewList
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Create a new list
+    put:
+      description: 'Update the attributes of a single existing list given by `list_id`.
+
+
+        Any of the following attributes can be optionally updated:
+
+
+        * `title`'
+      operationId: UpdateAList
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json: {}
+            text/csv: {}
+            text/tsv: {}
+          description: 200 OK
+      summary: Update a list
   /v1/sessions:
     delete:
       description: 'Revoke a session.
@@ -81,7 +125,7 @@ paths:
       summary: Create a new Session
   /v1/users:
     post:
-      description: Create a new User, returning the User ID
+      description: Create a new User, returning the User ID.
       operationId: CreateANewUser
       parameters: []
       responses:

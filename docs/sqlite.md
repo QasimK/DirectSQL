@@ -30,9 +30,17 @@ Use additional [helper threads](https://sqlite.org/pragma.html#pragma_threads) t
 
 [Overwrite deleted content](https://sqlite.org/pragma.html#pragma_secure_delete) with zeros. This is somewhat ineffective on solid state storage which uses flash translation layers.
 
+## `PRAGMA trusted_schema = on;`
+
+[Increase security](https://www.sqlite.org/pragma.html#pragma_trusted_schema).
+
+## `PRAGMA recursive_triggers = on`
+
+[Recursive triggers](https://www.sqlite.org/pragma.html#pragma_recursive_triggers) may be enabled.
+
 ## TODO
 
-- [shared cache mode]https://sqlite.org/sharedcache.html?
+- [shared cache mode]https://sqlite.org/sharedcache.html? (probably slower)
 - `pragma optimize;` on connection close
 - `pragma vacuum;` sometimes (or auto_vacuum=incremental) - if expecting shrinkage.
 - `pragma locking_mode;` maybe
@@ -40,3 +48,4 @@ Use additional [helper threads](https://sqlite.org/pragma.html#pragma_threads) t
 ## References
 
 1. <https://phiresky.github.io/blog/2020/sqlite-performance-tuning/>
+2. <https://manski.net/2012/10/sqlite-performance/>
