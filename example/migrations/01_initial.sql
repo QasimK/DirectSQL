@@ -8,7 +8,7 @@ CREATE TABLE user (
         CHECK (typeof(last_modified) = 'text')
         CHECK (last_modified == strftime('%Y-%m-%d %H:%M:%S', last_modified))
 );
-CREATE INDEX idx_user_username on user(username);
+CREATE INDEX idx_user_idx on user(user_id);
 
 
 CREATE TABLE session (
@@ -38,7 +38,11 @@ CREATE TABLE user_list (
     user_id INTEGER NOT NULL
         REFERENCES user ON DELETE CASCADE ON UPDATE CASCADE,
     list_id INTEGER NOT NULL
-        REFERENCES list ON DELETE CASCADE ON UPDATE CASCADE
+        REFERENCES list ON DELETE CASCADE ON UPDATE CASCADE,
+    role TEXT NOT NULL
+        CHECK (role IN ('OWNER', 'WRITER', 'READER')),
+
+    UNIQUE(user_id, list_id)
 );
 CREATE INDEX idx_user_list_user_id on user_list(user_id);
 CREATE INDEX idx_user_list_list_id on user_list(list_id);
@@ -49,7 +53,7 @@ CREATE TABLE item (
     list_id INTEGER NOT NULL
         REFERENCES list ON DELETE CASCADE ON UPDATE CASCADE,
     content TEXT NOT NULL
-        CHECK (typeof(content) = 'text'),
+        CHECK (typeof(content) = 'text')
 );
 CREATE INDEX idx_item_list_id on item(list_id);
 

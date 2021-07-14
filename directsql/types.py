@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class Query:
     file: str
     schema: dict
+    param_mappings: list
 
 
 @dataclass(frozen=True)
@@ -16,3 +17,4 @@ class CachedQuery:
     sql: str
     lookup_key: str
     schema: dict
+    param_mappings: list

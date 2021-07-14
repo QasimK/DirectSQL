@@ -10,6 +10,7 @@ def validate_int(gt=None, ge=None, lt=None, le=None):
         if not _is_int(value):
             raise InvalidParameters(f"{key} must be an integer")
 
+        value = int(value)
         if gt is not None and value <= gt:
             raise InvalidParameters(f"{key} must be strictly greater than {gt}")
 

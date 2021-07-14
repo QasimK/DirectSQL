@@ -1,14 +1,14 @@
 # DirectSQL
 
-Skip the REST API.
+Skip the REST API, because, god, I cannot write more CRUD.
 
 ## Features
 
+* Auto-generate a REST API with an OpenAPI specification
 * Query SQLite databases (with sensible defaults)
 * Write your own executors for other database backends
 * Request parameter validation and type conversion
-* TSV, CSV, and JSON responses
-* Auto-generate an OpenAPI specification
+* TSV, CSV, and JSON responses out of the box
 
 ## TODO
 
@@ -20,6 +20,7 @@ Skip the REST API.
 * Multi-threaded mode
 * Host the OpenAPI specification
 * Register adapters and converters for boolean, ...
+* When fetching results do iter instead of fetchall()
 
 ## HTTP Headers
 

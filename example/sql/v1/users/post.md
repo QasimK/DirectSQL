@@ -4,9 +4,9 @@ Create a new User, returning the User ID
 
 ```sql
 INSERT INTO
-    user (username, password)
+    user (password)
 VALUES
-    (:username, :password)
+    (:password)
 -- Requires SQlite 3.35
 -- RETURNING user_id
 ;

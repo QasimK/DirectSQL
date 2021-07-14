@@ -13,16 +13,20 @@ def sqlite3_executor(file: str, num_statements: int):
         # Use SQLite's default autocommit mode
         isolation_level=None,
     )
+
     # Enable name-based access on top of index-based access to rows
     connection.row_factory = sqlite3.Row
+
     # Enable foreign key constraints
-    connection.execute_script(
+    # Enable sensible, modern performance optimisations
+    # See docs/sqlite.md for further details
+    connection.executescript(
         """
         PRAGMA foreign_keys = on;
         PRAGMA journal_mode = wal;
         PRAGMA synchronous = normal;
         PRAGMA temp_store = memory;
-        PRAGMA mmap_size = 1000000000;
+        PRAGMA mmap_size = 268435456;
         PRAGMA threads = 4;
         PRAGMA secure_delete = on;
     """

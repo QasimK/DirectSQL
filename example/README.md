@@ -2,6 +2,11 @@
 
 Another TODO app :)
 
+## TODO
+
+- Create user with POST body rather than query string password
+- Hash password
+
 ## Running
 
 ```
@@ -11,8 +16,20 @@ cat migrations/01_initial.sql | sqlite3 db.sqlite3
 Start `run.sh`
 
 ```
-curl -i -H "Token: 1" "127.0.0.1:9091/settings?user_id=1"
-curl -X POST -i -H "Token: 1" "127.0.0.1:9091/settings?user_id=1&enable_dark_mode=true"
+# Create user
+curl -i -X POST "127.0.0.1:9091/v1/users?password=password"
+
+# Create session
+curl -i -X POST -H "Authorization: Basic MTpwYXNzd29yZA==" "127.0.0.1:9091/v1/sessions?token=mytoken123"
+
+# Get sessions
+curl -i -H "Authorization: Basic MTA6MTIz" "127.0.0.1:9091/v1/sessions"
+
+# Delete session
+curl -i -X DELETE -H "Authorization: Basic MTpwYXNzd29yZA==" "127.0.0.1:9091/v1/sessions?session_id=1"
+
+# Add List
+curl -i -X POST -H "Authorization: Basic MTA6MTIz" "127.0.0.1:9091/v1/lists?title=mylist"
 ```
 
 ## Model

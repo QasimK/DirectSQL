@@ -1,8 +1,25 @@
-# Remove a Session
+# Delete a session
 
-DELETE /v1/sessions/<id>
-DELETE /v1/sessions/by-id/<id>
+Revoke a session.
 
-## Log out all sessions
+Authentication: User Password
 
-DELETE /v1/sessions/by-user/<user-id>
+```sql
+WITH
+    auth_user AS (
+        SELECT user_id
+        FROM user
+        WHERE
+            user_id = :auth_user_id
+            AND password = :auth_password
+    )
+
+DELETE FROM
+    session
+WHERE
+    user_id IN (SELECT user_id FROM auth_user)
+    AND session_id = :session_id
+-- Requires SQlite 3.35
+-- RETURNING session_id
+;
+```
